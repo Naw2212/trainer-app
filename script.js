@@ -38,9 +38,9 @@ sb.auth.onAuthStateChange(async (event, session) => {
     authScreen.style.display = 'none';
     appScreen.style.display = 'flex';
     
-    // Проверяем роль
-const { data } = await sb.rpc('get_my_role');
-isAdmin = data === 'admin';
+    // Проверяем роль через функцию (обход блокировок)
+    const { data } = await sb.rpc('get_my_role');
+    isAdmin = data === 'admin';
     document.getElementById('user-role').textContent = isAdmin ? 'Роль: Админ 👑' : 'Роль: Клиент';
     
     switchTab('chat', document.querySelector('.nav-btn'));
@@ -128,11 +128,18 @@ window.enableEdit = function(tabId) {
   document.querySelector('.edit-btn').style.display = 'none';
 }
 
+// --- СОХРАНЕНИЕ ЧЕРЕЗ ФУНКЦИЮ (ОБХОД БЛОКИРОВОК) ---
 window.saveData = async function(tabId) {
   const newText = document.getElementById('edit-box').value;
-  const { error } = await sb.from('app_data').update({ content: newText }).eq('id', tabId);
-  if (error) alert('Ошибка доступа!');
-  else {
+  
+  const { error } = await sb.rpc('update_my_data', { 
+    data_id: tabId, 
+    new_content: newText 
+  });
+  
+  if (error) {
+    alert('Ошибка доступа: ' + error.message);
+  } else {
     alert('Сохранено!');
     switchTab(tabId, document.querySelector('.nav-btn.active'));
   }
@@ -187,7 +194,7 @@ async function sendMessage() {
   try {
     const modelToUse = imageToSend ? 'qwen/qwen3.8-27b' : 'openai/gpt-oss-120b';
     
-    // ЗАПРОС К НАШЕМУ СЕРВЕРУ (решает проблему с телефонами и CORS)
+    // ЗАПРОС К НАШЕМУ СЕРВЕРУ НА RENDER
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
