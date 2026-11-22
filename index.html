@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренер</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="auth-screen" class="auth-container">
+    <h2>Вход в систему</h2>
+    <input type="email" id="auth-email" placeholder="Email">
+    <input type="password" id="auth-pass" placeholder="Пароль">
+    <button id="btn-login">Войти</button>
+    <button id="btn-register" style="background:transparent; border:1px solid var(--border); color:var(--text);">Зарегистрироваться</button>
+    <p id="auth-msg" style="color: var(--accent); font-size: 14px; margin-top: 10px; text-align:center;"></p>
+  </div>
+
+  <div id="app-screen" class="app" style="display: none;">
+    <header class="header">
+      <div>
+        <h1>Твой тренер</h1>
+        <p class="subtitle" id="user-role">Роль: ...</p>
+      </div>
+      <button id="btn-logout" style="background:none; border:none; color:#888; cursor:pointer; font-size:14px;">Выйти</button>
+    </header>
+
+    <main class="content" id="content-area"></main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" onclick="switchTab('chat', this)">
+        <span class="icon">💬</span><span class="label">Чат</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('clients', this)">
+        <span class="icon">👥</span><span class="label">Клиенты</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('schedule', this)">
+        <span class="icon">📅</span><span class="label">График</span>
+      </button>
+    </nav>
+  </div>
+
+ <script src="script.js"></script>
+</body>
+</html>
