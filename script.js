@@ -39,8 +39,8 @@ sb.auth.onAuthStateChange(async (event, session) => {
     appScreen.style.display = 'flex';
     
     // Проверяем роль
-    const { data } = await sb.from('profiles').select('role').eq('id', currentUser.id).single();
-isAdmin = data?.role === 'admin';
+const { data } = await sb.rpc('get_my_role');
+isAdmin = data === 'admin';
     document.getElementById('user-role').textContent = isAdmin ? 'Роль: Админ 👑' : 'Роль: Клиент';
     
     switchTab('chat', document.querySelector('.nav-btn'));
