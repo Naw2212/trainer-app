@@ -40,7 +40,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
     
     // Проверяем роль
     const { data } = await sb.from('profiles').select('role').eq('id', currentUser.id).single();
-    isAdmin = data?.role === 'admin';
+isAdmin = data?.role === 'admin';
     document.getElementById('user-role').textContent = isAdmin ? 'Роль: Админ 👑' : 'Роль: Клиент';
     
     switchTab('chat', document.querySelector('.nav-btn'));
